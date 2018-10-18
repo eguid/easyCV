@@ -16,8 +16,8 @@
 ### web service
     Web services used springboot services,each web service is an independent micro service.
     The default port of video recording service is '8082',video capture service is '8081'.
-    同样的，web服务也是两个独立的springboot微服务。
-    其中截图功能是支持文件和base64两种方式生成截图，而录像服务除了需要指定保存路径外，还需要配置一个可访问的http/ftp访问地址（我们一般把录像文件存放到一个http/ftp服务的目录下，以方便点播录像文件）
+    同样的，web服务也是两个独立的springboot微服务，截图服务默认使用8081端口，录像服务使用8082端口。
+    其中截图功能是支持文件和base64两种方式生成截图，而录像服务除了需要指定保存路径外，还需要配置一个可访问的http/ftp访问地址（我们一般把录像文件存放到一个http/ftp服务的目录下，以方便点播录像文件）。
 
 ### support
     Video source support rtsp/rtmp/flv/hls/file...,record file support mp4/flv/mkv/avi....
