@@ -1,5 +1,5 @@
-# vrs-services
-vrs-services（video recording and snapshot service）视频录像和快照(截图)服务
+# easyCV
+video recording and snapshot service,based on javaCV 基于javaCV的视频录像和快照(截图)服务
 
 
 ### dependency library
