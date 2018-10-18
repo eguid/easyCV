@@ -15,4 +15,7 @@ The core library of video recording and snapshots is two separate modules.
 Web services used springboot services,each web service is an independent micro service.
 The default port of video recording service is '8082',video capture service is '8081'.
 
+### support
+ Video source support rtsp/rtmp/flv/hls/file...,record file support mp4/flv/mkv/avi....
+ Image format support jpg/png/jpeg/gif/bmp.
 
