@@ -1,16 +1,17 @@
 # easyCV
-   video recording and snapshot service,based on javaCV. 基于javaCV的视频录像和快照(截图)服务。
+      video recording and snapshot service,based on javaCV. 
+      基于javaCV的视频录像和快照(截图)服务。
 
 
 ### dependency library
-   Core lib based on 'javacv 1.4.x',web service based on 'spring-boot 2.x'.
+      Core lib based on 'javacv 1.4.x',web service based on 'spring-boot 2.x'.
 
 ### build
-   Project is based on jdk1.8,build on maven.
+      Project is based on jdk1.8,build on maven.
 
 ### core lib
-   The core library of video recording and snapshots is two separate modules.
-    截图快照和视频录像是两个独立的核心库。
+      The core library of video recording and snapshots is two separate modules.
+      截图快照和视频录像是两个独立的核心库。
 
 ### web service
     Web services used springboot services,each web service is an independent micro service.
