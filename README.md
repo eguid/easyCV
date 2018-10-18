@@ -2,8 +2,8 @@
       video recording and snapshot service,based on javaCV. 
       基于javaCV的视频录像和快照(截图)服务。
 ### 演示demo
-      1.[截图服务在线演示：eguid.cc/screenshot/test](http://eguid.cc/screenshot/test)<br />
-      2.[录像服务在线演示：eguid.cc/record/test](http://eguid.cc/record/test))<br />
+1、[截图服务在线演示：http://eguid.cc/screenshot/test](http://eguid.cc/screenshot/test)<br />
+2、[录像服务在线演示：http://eguid.cc/record/test](http://eguid.cc/record/test)<br />
  
 ### dependency library
       Core lib based on 'javacv 1.4.x',web service based on 'spring-boot 2.x'.
