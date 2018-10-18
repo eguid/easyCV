@@ -1,0 +1,153 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>cc.eguid.cv</groupId>
+	<artifactId>easyCV</artifactId>
+	<version>1.0</version>
+	<packaging>pom</packaging>
+	<name>easyCV</name>
+	<description>easyCV</description>
+	<modules>
+		<module>corelib</module>
+		<module>web-service</module>
+	</modules>
+
+	<organization>
+		<name>eguid</name>
+		<url>https://blog.eguid.cc</url>
+	</organization>
+	<scm>
+		<developerConnection>eguid</developerConnection>
+		<connection>eguid@qq.com</connection>
+		<url>https://blog.eguid.cc</url>
+	</scm>
+
+	<properties>
+		<gcu.product>${project.name}</gcu.product>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ssZ</maven.build.timestamp.format>
+		<!-- maven编译插件 -->
+		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.testTarget>1.8</maven.compiler.testTarget>
+		<maven.compiler.testSource>1.8</maven.compiler.testSource>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!-- log -->
+		<log4j.version>1.2.17</log4j.version>
+		<slf4j.version>1.7.25</slf4j.version>
+		<!-- test -->
+		<junit>4.12</junit>
+		<!-- javacpp当前版本 -->
+		<javacpp.version>1.4.2</javacpp.version>
+		<!-- opencv版本 -->
+		<opencv.version>3.4.2</opencv.version>
+		<!-- ffmpeg版本 -->
+		<ffmpeg.version>4.0.1</ffmpeg.version>
+	</properties>
+	<dependencyManagement>
+		<dependencies>
+			<!-- Override Spring Data release train provided by Spring Boot -->
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-releasetrain</artifactId>
+				<version>Fowler-SR2</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>2.0.5.RELEASE</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- 日志 -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<!-- test -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit}</version>
+				<scope>test</scope>
+			</dependency>
+			<!-- javacv -->
+			<dependency>
+				<groupId>org.bytedeco</groupId>
+				<artifactId>javacv-platform</artifactId>
+				<version>${javacpp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.bytedeco</groupId>
+				<artifactId>javacv</artifactId>
+				<version>${javacpp.version}</version>
+			</dependency>
+			<!-- javacpp -->
+			<dependency>
+				<groupId>org.bytedeco</groupId>
+				<artifactId>javacpp</artifactId>
+				<version>${javacpp.version}</version>
+			</dependency>
+			<!-- ffmpeg -->
+			<dependency>
+				<groupId>org.bytedeco.javacpp-presets</groupId>
+				<artifactId>ffmpeg-platform</artifactId>
+				<version>${ffmpeg.version}-${javacpp.version}</version>
+			</dependency>
+			<!-- opencv -->
+			<dependency>
+				<groupId>org.bytedeco.javacpp-presets</groupId>
+				<artifactId>opencv-platform</artifactId>
+				<version>${opencv.version}-${javacpp.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven-compiler-plugin.version}</version>
+					<configuration>
+						<source>${maven.compiler.source}</source>
+						<target>${maven.compiler.target}</target>
+						<compilerVersion>1.8</compilerVersion>
+						<verbose>true</verbose>
+						<!-- 解决中文乱码无法编译问题 -->
+						<encoding>UTF8</encoding>
+						<fork>true</fork>
+						<executable>${JAVA8_HOME}/bin/javac</executable>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.10.4</version>
+					<configuration>
+						<additionalparam>-Xdoclint:none</additionalparam>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>

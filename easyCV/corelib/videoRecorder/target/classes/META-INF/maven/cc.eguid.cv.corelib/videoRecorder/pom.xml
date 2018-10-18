@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cc.eguid.cv</groupId>
+		<artifactId>corelib</artifactId>
+		<version>1.0</version>
+	</parent>
+	<groupId>cc.eguid.cv.corelib</groupId>
+	<artifactId>videoRecorder</artifactId>
+	<version>2018.10.18</version>
+	<name>videoRecorder</name>
+	<url>https://blog.eguid.cc</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.bytedeco.javacpp-presets</groupId>
+			<artifactId>opencv-platform</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.bytedeco</groupId>
+			<artifactId>javacv</artifactId>
+		</dependency>
+	</dependencies>
+	<description>2018年10月17日
+1、修复javacv录制mp4视频的编码问题，修改为强制使用h264编码
+2018年10月16日
+1、增加历史任务持久化接口，原有内置历史任务存储实现转移到DefaultRecordInfoStorage中，如果未指定持久化，则使用默认存储器
+2、增加目录设置，如果目录不为空，则使用该目录作为录像存储目录
+
+2018年10月10日
+完成主体程序开发，并完成整体流程测试
+基本架构：
+任务管理器（管理单元）--&gt;管理一个任务处理器对象池
+    |                      |
+持久化接口     任务处理器(控制单元，预处理和控制工作子线程处理)----&gt;工作子线程（计算单元）</description>
+</project>
