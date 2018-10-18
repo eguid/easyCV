@@ -3,7 +3,9 @@
       基于javaCV的视频录像和快照(截图)服务。
 ### 演示demo
 1、[截图服务在线演示：http://eguid.cc/screenshot/test](http://eguid.cc/screenshot/test)<br />
-2、[录像服务在线演示：http://eguid.cc/record/test](http://eguid.cc/record/test)<br />
+      可以通过http://eguid.cc/screenshot/查看历史截图列表
+2、[录像服务在线演示：http://eguid.cc/videorecord/test](http://eguid.cc/videorecord/test)<br />
+       同样可以通过http://eguid.cc/videorecord/查看历史录像列表并进行点播观看
  
 ### dependency library
       Core lib based on 'javacv 1.4.x',web service based on 'spring-boot 2.x'.
