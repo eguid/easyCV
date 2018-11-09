@@ -1,6 +1,6 @@
 # easyCV
       video recording and snapshot service,based on javaCV. 
-      基于javaCV的视频录像和快照(截图)服务。
+      基于javaCV的跨平台视频录像和快照(截图)服务，开箱即用。
 ### 演示demo
 1、[截图服务在线演示：http://eguid.cc/screenshot/test](http://eguid.cc/screenshot/test)<br />
       
