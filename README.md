@@ -23,11 +23,15 @@
 
 ### exaples
      提供了几个springboot服务，截图服务默认使用8081端口，录像服务使用8082端口。
-    其中截图功能是支持文件和base64两种方式生成截图，而录像服务除了需要指定保存路径外，还需要配置一个可访问的http/ftp访问地址（我们一般把录像文件存放到一个http/ftp服务的目录下，以方便点播录像文件）。
-    截图和录像信息的表结构都是简单的单表，这里就不放了，直接查看*Mapper.xml文件即可
+    其中截图功能支持保存成文件和返回base64两种方式获取截图。
+    截图文件与录像文件都需要额外配合一个单独http/ftp服务才能进行访问
+    录像服务除了需要指定保存路径外，与截图服务相同，我们一般把录像文件存放到http/ftp服务的根目录下，方便点播，推荐使用nginx）。
+    截图和录像信息的表结构都是简单的单表，这里就不提供了，直接查看*Mapper.xml文件即可
 
 ### support
     Support rtsp/rtmp/flv/hls/file...,Recorder support mp4/flv/mkv/avi....
     Image support jpg/png/jpeg/gif/bmp.
-    视频源支持rtsp/rtmp/flv/hls/视频文件等多种音视频流媒体源，录像文件可以支持mp4/flv/mkv/avi等视频格式，视频快照（截图）支持jpg/png/jpeg/gif/bmp等格式。
+    视频源支持rtsp/rtmp/flv/hls/视频文件等多种音视频流媒体源。
+    录像文件可以支持mp4/flv/mkv/avi等视频格式。
+    视频快照（截图）支持jpg/png/jpeg/gif/bmp等格式。
 
