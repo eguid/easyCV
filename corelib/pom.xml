@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cc.eguid.cv</groupId>
+		<artifactId>easyCV</artifactId>
+		<version>2019.4.16</version>
+	</parent>
+	<groupId>cc.eguid.cv.corelib</groupId>
+	<artifactId>corelib</artifactId>
+	<name>corelib</name>
+	<version>1.0</version>
+	<packaging>pom</packaging>
+	<description>corelib</description>
+
+	<modules>
+		<module>videoimageshot</module>
+    	<module>videoRecorder</module>
+  	</modules>
+
+	<dependencies>
+		<!-- 日志
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		 -->
+		<!-- test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+</project>

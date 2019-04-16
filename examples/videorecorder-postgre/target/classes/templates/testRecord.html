@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${hello}">hello</title>
+<link href="https://vjs.zencdn.net/7.2/video-js.min.css" rel="stylesheet">
+<script src="https://vjs.zencdn.net/7.2/video.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/videojs-flash@2/dist/videojs-flash.min.js"></script>
+</head>
+<body>
+<h1 th:text="${hello}"></h1>
+<p>操作须知：先点击录像按钮后停止按钮点亮，说明开始录像；点击停止按钮成功后播放录像按钮点亮；点击播放录像按钮开始点播录像视频。虽然录像可以支持较多视频格式，但是播放器只支持mp4,flv这些</p>
+<div>
+<label for="src">流媒体视频源（rtsp/rtmp/hls/http-flv地址）：</label>
+<input type="url" autofocus="autofocus" name="src" id="src">
+<label for="out">录像文件名称：</label>
+<input type="text" name="out" id="out">
+<button id="btn" type="button" name="录像" title="录像" onclick="submit();">录像</button>
+<button id="stopbtn" type="button" name="停止录像" title="停止录像" onclick="stop();">停止</button>
+</div>
+<div>
+<p>播放录像(本地测试)</p>
+<button id="playbtn" type="button" name="播放当前录像" title="播放当前录像" onclick="play();">播放录像</button>
+<input type="text" name="id" id="id" hidden="hidden"/>
+<video id="my-player" class="video-js" controls poster="http://eguid.cc/eguid-s.png" data-setup='{"controls": true, "autoplay": false, "preload": "false"}'>
+</video>
+<div>
+<p>状态</p>
+<b id="stat"></b>
+</div>
+</div>
+</body>
+<script type="text/javascript">
+
+var options = {};
+
+var player = videojs('my-player', options, function onPlayerReady() {
+  videojs.log('Your player is ready!');
+  this.play();
+  this.on('ended', function() {
+    videojs.log('Awww...over so soon?!');
+  });
+});
+function isEmpty(s){
+	return s==undefined||s==null||s.length<1||s=='';
+}
+function getDom(id){
+	return document.getElementById(id);
+}
+
+function req(reqmethod,url,ret){
+	var xmlhttp;
+	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	}else{// code for IE6, IE5
+	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function(){
+		 if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			 if(typeof ret === "function"){
+				ret(xmlhttp.responseText);
+			}
+		}
+	};
+	xmlhttp.open(reqmethod,url,true);
+	xmlhttp.send();
+}
+//修改状态
+function state(msg){
+	getDom("stat").innerHTML=msg;
+}
+
+function submit(){
+	getDom("btn").disabled=true;
+	var out=getDom("out").value;
+	var src=getDom("src").value;
+	if(isEmpty(src)||isEmpty(out)){
+		alert("视频源和录制文件名不能为空");
+		return;
+	}
+	state("准备录像");
+	req("GET","record?src="+src+"&out="+out,function(res){
+		getDom("stopbtn").disabled=false;
+		if(!isEmpty(res)){
+			var data=eval('('+res+')');
+			if(isEmpty(data)||data.code!='1'){
+				state("录像操作失败");
+				alert(data.msg);
+				return;
+			}
+			getDom("id").value=data.msg;
+			state("正在录像中...（可点击停止按钮结束录像）");
+		}else{
+			state("请求失败");
+		}
+	});
+}
+getDom("playbtn").disabled=true;
+getDom("stopbtn").disabled=true;
+
+function play(){
+	var id=getDom("id").value;
+	if(isEmpty(id)){
+		alert("尚未开始录像");
+	}
+	state("正在查找录像...");
+	req("GET","get?id="+id,function(res){
+		if(!isEmpty(res)){
+			var data=eval('('+res+')');
+			if(isEmpty(data)||data.code=='0'){
+				alert(data.msg);
+				return;
+			}
+			var url= data.playurl;
+			if(isEmpty(url)){
+				state("没有点播视频");
+				return;
+			}
+			player.src(url);
+			player.play();
+			state("正在播放录像...");
+		}else{
+			state("请求失败");
+		}
+	});
+}
+
+function stop(){
+	var id=getDom("id").value;
+	if(isEmpty(id)){
+		alert("尚未开始录像");
+		return;
+	}
+	getDom("stopbtn").disabled=true;
+	if(flag=false){
+		alert("已停止录像，请勿重复点击");
+		getDom("stopbtn").disabled=false;
+		return;
+	}
+	state("正在停止录像...");
+	req("GET","stop?id="+id,function(res){
+		getDom("stopbtn").disabled=false;
+		if(!isEmpty(res)){
+			var data=eval('('+res+')');
+			if(isEmpty(data)||data.code!='1'){
+				alert(data.msg);
+				return;
+			}
+			getDom("btn").disabled=false;
+			getDom("playbtn").disabled=false;
+			state("已停止录像...（可通过播放按钮播放录像）");
+		}else{
+			state("请求失败");
+		}
+	});
+}
+
+</script>
+</html>
