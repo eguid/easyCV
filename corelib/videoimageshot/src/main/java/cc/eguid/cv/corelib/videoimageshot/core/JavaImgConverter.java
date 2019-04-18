@@ -5,20 +5,16 @@ import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
 import java.awt.image.Raster;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
-import javax.imageio.stream.ImageOutputStreamImpl;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -99,7 +95,6 @@ public class JavaImgConverter {
 	 */
 	public static void viewBGR(int width,int height,ByteBuffer src) {
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-//		image.setRGB(0, 0, width, height, rgbarr, 0,height);
 		Raster ra = image.getRaster();
 		DataBuffer out = ra.getDataBuffer();
 		DataBufferByte db=(DataBufferByte)out;
@@ -128,10 +123,10 @@ public class JavaImgConverter {
 	public static String bufferedImage2Base64(BufferedImage image, String format) throws IOException {
 		Encoder encoder=CurrentThreadData.localEncoder.get();
 		ByteArrayOutputStreamPlus baos = CurrentThreadData.localbaos.get();
-		long last=System.currentTimeMillis();
+//		long last=System.currentTimeMillis();
 		ImageIO.write(image, format, baos);// 写出到字节流，这个耗时比较长
-		long now=System.currentTimeMillis();
-		System.err.println("图像转换为字节流耗时："+(now-last));
+//		long now=System.currentTimeMillis();
+//		System.err.println("图像转换为字节流耗时："+(now-last));
 //		byte[] bytes=baos.toByteArray();
 		// 编码成base64
 		String jpg_base64 = encoder.encodeToString(baos);

@@ -20,20 +20,40 @@ import cc.eguid.cv.corelib.videoimageshot.exception.StreamNotFoundException;
 
 public abstract class GrabberTmplate {
 
+	/*
+	 * Register all formats and codecs
+	 */
 	static {
-		// Register all formats and codecs
 		av_register_all();
 		avformat_network_init();
+		av_log_set_level(AV_LOG_ERROR);
 	}
 	
-	protected int width;//宽度
-	protected int height;//高度
+	protected Integer width;//宽度
+	protected Integer height;//高度
 	
-	private final static int PROBESIZE=500*1024;
-	private final static int MAX_ANALYZE_DURATION=3 * AV_TIME_BASE;
+//	private final static int PROBESIZE=1920*1080;
+//	private final static int MAX_ANALYZE_DURATION=10 * AV_TIME_BASE;
     private AVDictionary options = new AVDictionary();
    
-	
+	public GrabberTmplate() {
+		super();
+	}
+
+	public GrabberTmplate(Integer width, Integer height) {
+		super();
+		this.width = width;
+		this.height = height;
+	}
+
+	public Integer getWidth() {
+		return width;
+	}
+
+	public Integer getHeight() {
+		return height;
+	}
+
 	/**
 	 * 打开视频流
 	 * @param url -url
@@ -61,16 +81,39 @@ public abstract class GrabberTmplate {
 	}
 	
 	/**
-	 * 获取第一帧视频位置
+	 * 获取视频通道
 	 * @param pFormatCtx
 	 * @return
 	 */
 	protected int findVideoStreamIndex(AVFormatContext pFormatCtx) {
-		int i = 0;
-		for (i = 0; i < pFormatCtx.nb_streams(); i++) {
+		int size=pFormatCtx.nb_streams();
+//		System.err.println("流数量："+size);
+		for (int i = 0; i < size; i++) {
 			AVStream stream=pFormatCtx.streams(i);
 			AVCodecContext codec=stream.codec();
-			if (codec.codec_type() == AVMEDIA_TYPE_VIDEO) {
+			int type=codec.codec_type();
+//			System.err.println("类型："+type);
+			if (type == AVMEDIA_TYPE_VIDEO) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	/**
+	 * 获取音频通道
+	 * @param pFormatCtx
+	 * @return
+	 */
+	protected int findAudioStreamIndex(AVFormatContext pFormatCtx) {
+		int size=pFormatCtx.nb_streams();
+//		System.err.println("流数量："+size);
+		for (int i = 0; i < size; i++) {
+			AVStream stream=pFormatCtx.streams(i);
+			AVCodecContext codec=stream.codec();
+			int type=codec.codec_type();
+//			System.err.println("类型："+type);
+			if (type == AVMEDIA_TYPE_AUDIO) {
 				return i;
 			}
 		}
@@ -83,13 +126,14 @@ public abstract class GrabberTmplate {
 	 * @param videoStream
 	 * @return
 	 */
-	protected AVCodecContext findVideoStream(AVFormatContext pFormatCtx ,int videoStream)throws StreamNotFoundException {
-		if(videoStream >=0) {
+	protected AVCodecContext findVideoStream(AVFormatContext pFormatCtx ,int videoStreamIndex)throws StreamNotFoundException {
+		if(videoStreamIndex >=0) {
 			// Get a pointer to the codec context for the video stream
-			AVStream stream=pFormatCtx.streams(videoStream);
+			AVStream stream=pFormatCtx.streams(videoStreamIndex);
 			AVCodecContext pCodecCtx = stream.codec();
 			return pCodecCtx;
 		}
+		//如果没找到视频流,抛出异常
 		throw new StreamNotFoundException("Didn't open video file");
 	}
 	
@@ -101,14 +145,14 @@ public abstract class GrabberTmplate {
 		// Find the decoder for the video stream
 		AVCodec pCodec = avcodec_find_decoder(pCodecCtx.codec_id());
 		if (pCodec == null) {
-			System.err.println("Codec not found");
-			throw new CodecNotFoundExpception("Codec not found");
+			System.err.println("Codec not found!");
+			throw new CodecNotFoundExpception("Codec not found!");
 		}
 		AVDictionary optionsDict = null;
 		// Open codec
 		if (avcodec_open2(pCodecCtx, pCodec, optionsDict) < 0) {
-			System.err.println("Could not open codec");
-			throw new CodecNotFoundExpception("Could not open codec"); // Could not open codec
+			System.err.println("Could not open codec!");
+			throw new CodecNotFoundExpception("Could not open codec!"); // Could not open codec
 		}
 		return pCodecCtx;
 	}
@@ -125,12 +169,13 @@ public abstract class GrabberTmplate {
 		
 		// Open video file
 		AVFormatContext pFormatCtx=openInput(url);
+		//不再使用减少缓存和检索时长方法，该方法导致高清/高清视频无法获取到i帧的问题
 //		if(url.indexOf("rtmp")>=0) {
 			//解决rtmp检索时间过长问题
-		    //限制最大读取缓存
-		    pFormatCtx.probesize(PROBESIZE);//设置500k能保证高清视频也能读取到关键帧
+		    //限制最大读取缓存，
+//		    pFormatCtx.probesize(PROBESIZE);//设置500k能保证高清视频也能读取到关键帧
 		  //限制avformat_find_stream_info最大持续时长，设置成3秒
-		    pFormatCtx.max_analyze_duration(MAX_ANALYZE_DURATION);
+//		    pFormatCtx.max_analyze_duration(MAX_ANALYZE_DURATION);
 //		}
 		// Retrieve stream information
 		pFormatCtx=findStreamInfo(pFormatCtx);
@@ -138,7 +183,8 @@ public abstract class GrabberTmplate {
 		//av_dump_format(pFormatCtx, 0, url, 0);
 
 		//Find a video stream
-		int videoStream=findVideoStreamIndex(pFormatCtx);
+		final int videoStream=findVideoStreamIndex(pFormatCtx);
+		
 		AVCodecContext pCodecCtx =findVideoStream(pFormatCtx,videoStream);
 		
 		// Find the decoder for the video stream
@@ -148,8 +194,13 @@ public abstract class GrabberTmplate {
 		//Allocate an AVFrame structure
 		AVFrame pFrameRGB = av_frame_alloc();
 
-		width = pCodecCtx.width();
-		height = pCodecCtx.height();
+		int srcWidth = pCodecCtx.width();
+		int srcHeight = pCodecCtx.height();
+		//如果分辨率为空，则保持图片尺寸保持不变
+		if(width==null||height==null) {
+			width=srcWidth;
+			height=srcHeight;
+		}
 		pFrameRGB.width(width);
 		pFrameRGB.height(height);
 		pFrameRGB.format(fmt);
@@ -157,7 +208,7 @@ public abstract class GrabberTmplate {
 		// Determine required buffer size and allocate buffer
 		int numBytes = avpicture_get_size(fmt, width, height);
 		DoublePointer param=null;
-		SwsContext sws_ctx = sws_getContext(width, height, pCodecCtx.pix_fmt(), width, height,fmt, SWS_FAST_BILINEAR, null, null, param);
+		SwsContext sws_ctx = sws_getContext(srcWidth, srcHeight, pCodecCtx.pix_fmt(), width, height,fmt, SWS_FAST_BILINEAR, null, null, param);
 
 		BytePointer buffer = new BytePointer(av_malloc(numBytes));
 		// Assign appropriate parts of buffer to image planes in pFrameRGB
@@ -170,14 +221,17 @@ public abstract class GrabberTmplate {
 			while (av_read_frame(pFormatCtx, packet) >= 0) {
 				// Is this a packet from the video stream?
 				if (packet.stream_index() == videoStream) {
-					// Decode video frame
-					avcodec_decode_video2(pCodecCtx, pFrame, frameFinished, packet);
-					// Did we get a video frame?
-					if (frameFinished[0] >= 0) {
-						// Convert the image from its native format to BGR
-						sws_scale(sws_ctx, pFrame.data(), pFrame.linesize(), 0, height, pFrameRGB.data(),pFrameRGB.linesize());
-						//Convert BGR to ByteBuffer
-						return saveFrame(pFrameRGB, width, height);
+					//Is i frame?
+					if(packet.flags()==AV_PKT_FLAG_KEY) {
+						// Decode video frame
+						avcodec_decode_video2(pCodecCtx, pFrame, frameFinished, packet);
+						// Did we get a video frame?
+						if (frameFinished[0] >= 0) {
+							// Convert the image from its native format to BGR
+							sws_scale(sws_ctx, pFrame.data(), pFrame.linesize(), 0, srcHeight, pFrameRGB.data(),pFrameRGB.linesize());
+							//Convert BGR to ByteBuffer
+							return saveFrame(pFrameRGB, width, height);
+						}
 					}
 				}
 				// Free the packet that was allocated by av_read_frame

@@ -12,20 +12,6 @@ import cc.eguid.cv.corelib.videoimageshot.threaddata.CurrentThreadData;
  *
  */
 public class FFmpegScreenshot implements Screenshot {
-	
-	@Override
-	public boolean shot(String url, String imgurl, String format) throws IOException {
-		if (format == null) {
-			format =CurrentThreadData.DETAULT_FORMAT;
-		}
-		BufferedImage img = CurrentThreadData.grabber.get().grabBufferImage(url);
-		if (img != null) {
-			JavaImgConverter.saveImage(img, format, imgurl);
-			return true;
-		}
-		return false;
-
-	}
 
 	@Override
 	public boolean shot(String url, String imgurl) throws IOException {
@@ -36,25 +22,23 @@ public class FFmpegScreenshot implements Screenshot {
 		}
 		return shot(url, imgurl, fomrat);
 	}
-
+	
 	@Override
-	public String getImgBase64(String url, String format) throws IOException {
-		if (format == null) {
-			format =CurrentThreadData.DETAULT_FORMAT;
-		}
-		BufferedImage img = CurrentThreadData.grabber.get().grabBufferImage(url);
-//		ByteBuffer buffer=CurrentThreadData.grabber.get().grabBuffer(url);
-		if (img!= null) {
-			String base64=JavaImgConverter.bufferedImage2Base64(img, format);
-			return base64;
-		}
-		return null;
+	public boolean shot(String url, String imgurl, String format) throws IOException {
+		return shot(url, imgurl, format, null, null);
+
 	}
 
 	@Override
 	public String getImgBase64(String url) throws IOException {
 		return getImgBase64(url, null);
 	}
+	
+	@Override
+	public String getImgBase64(String url, String format) throws IOException {
+		return getImgBase64(url, format, null, null);
+	}
+
 
 	@Override
 	public String shotAndGetBase64(String url, String imgurl)throws IOException {
@@ -63,10 +47,42 @@ public class FFmpegScreenshot implements Screenshot {
 
 	@Override
 	public String shotAndGetBase64(String url, String imgurl, String format) throws IOException {
+		return shotAndGetBase64(url,imgurl,format,null,null);
+	}
+
+	@Override
+	public boolean shot(String url, String imgurl, String format, Integer width, Integer height) throws IOException {
+		if (format == null) {
+			format =CurrentThreadData.DETAULT_FORMAT;
+		}
+		BufferedImage img = CurrentThreadData.grabber.get().setWidth(width).setHeight(height).grabBufferImage(url);
+		if (img != null) {
+			JavaImgConverter.saveImage(img, format, imgurl);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public String getImgBase64(String url, String format, Integer width, Integer height) throws IOException {
+		if (format == null) {
+			format =CurrentThreadData.DETAULT_FORMAT;
+		}
+		BufferedImage img = CurrentThreadData.grabber.get().setWidth(width).setHeight(height).grabBufferImage(url);
+		if (img!= null) {
+			String base64=JavaImgConverter.bufferedImage2Base64(img, format);
+			return base64;
+		}
+		return null;
+	}
+
+	@Override
+	public String shotAndGetBase64(String url, String imgurl, String format, Integer width, Integer height)
+			throws IOException {
 		if (format == null) {
 			format = CurrentThreadData.DETAULT_FORMAT;
 		}
-		BufferedImage img =CurrentThreadData.grabber.get().grabBufferImage(url);
+		BufferedImage img =CurrentThreadData.grabber.get().setWidth(width).setHeight(height).grabBufferImage(url);
 		if (img != null) {
 			JavaImgConverter.saveImage(img, format, imgurl);
 			return JavaImgConverter.bufferedImage2Base64(img, format);

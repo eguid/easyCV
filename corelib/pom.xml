@@ -15,7 +15,8 @@
 
 	<modules>
 		<module>videoimageshot</module>
-    	<module>videoRecorder</module>
+		<!-- 
+    	<module>videoRecorder</module> -->
   	</modules>
 
 	<dependencies>

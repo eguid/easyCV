@@ -19,6 +19,16 @@ import cc.eguid.cv.corelib.videoimageshot.core.JavaImgConverter;
  */
 public class FFmpegVideoImageGrabber extends GrabberTmplate implements BufferGrabber,BufferedImageGrabber{
 	
+	public FFmpegVideoImageGrabber setWidth(Integer width) {
+		this.width = width;
+		return this;
+	}
+	
+	public FFmpegVideoImageGrabber setHeight(Integer height) {
+		this.height = height;
+		return this;
+	}
+
 	@Override
 	protected ByteBuffer saveFrame(AVFrame pFrame, int width, int height){
 		BytePointer data = pFrame.data(0);
@@ -75,10 +85,10 @@ public class FFmpegVideoImageGrabber extends GrabberTmplate implements BufferGra
 	@Override
 	public BufferedImage grabBufferImage(String url, Integer fmt) throws IOException {
 		BufferedImage image=null;
-		long now =System.currentTimeMillis();
+//		long now =System.currentTimeMillis();
 		ByteBuffer buf=grabBuffer(url,fmt);
-		long cu=System.currentTimeMillis();
-		System.err.println("截图耗时："+(cu-now));
+//		long cu=System.currentTimeMillis();
+//		System.err.println("截图耗时："+(cu-now));
 		image= JavaImgConverter.BGR2BufferedImage(buf,width,height);
 		return image;
 	}
@@ -87,6 +97,7 @@ public class FFmpegVideoImageGrabber extends GrabberTmplate implements BufferGra
 	private Integer fmt;//图像数据结构
 	
 	public FFmpegVideoImageGrabber() {
+		
 	}
 	
 	public FFmpegVideoImageGrabber(String url) {
@@ -95,6 +106,12 @@ public class FFmpegVideoImageGrabber extends GrabberTmplate implements BufferGra
 	
 	public FFmpegVideoImageGrabber(String url, Integer fmt) {
 		super();
+		this.url = url;
+		this.fmt = fmt;
+	}
+	
+	public FFmpegVideoImageGrabber(String url, Integer fmt,Integer width,Integer height) {
+		super(width,height);
 		this.url = url;
 		this.fmt = fmt;
 	}

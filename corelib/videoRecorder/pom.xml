@@ -11,10 +11,11 @@
 	</parent>
 	<groupId>cc.eguid.cv.corelib</groupId>
 	<artifactId>videoRecorder</artifactId>
-	<version>1.1.0-2019.3.25</version>
+	<version>2019.3.25</version>
 	<name>videoRecorder</name>
 	<url>https://blog.eguid.cc</url>
-	<description>2018年10月17日
+	<description>
+	2018年10月17日
 	1、修复javacv录制mp4视频的编码问题，修改为强制使用h264编码
 	2018年10月16日
 	1、增加历史任务持久化接口，原有内置历史任务存储实现转移到DefaultRecordInfoStorage中，如果未指定持久化，则使用默认存储器

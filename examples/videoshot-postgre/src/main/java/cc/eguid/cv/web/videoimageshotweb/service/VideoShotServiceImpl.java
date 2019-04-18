@@ -37,6 +37,7 @@ public class VideoShotServiceImpl implements VideoShotService {
 		long now=System.currentTimeMillis();
 		String src=param.getSrc(),out = param.getOutput(),fmt=param.getFmt(),name=param.getName();
 		Integer needBase64=param.getNeedBase64();
+		Integer width=param.getWidth(),height=param.getHeight();
 		String base64;
 		boolean isSuccess=false;
 		if(out==null) {
@@ -49,17 +50,17 @@ public class VideoShotServiceImpl implements VideoShotService {
 			if(needBase64 == null||needBase64==0) {
 				//只保存文件
 				String outfilepath=out+name+"."+fmt;
-				isSuccess=shoter.shot(src,outfilepath,fmt);
+				isSuccess=shoter.shot(src,outfilepath,fmt,width,height);
 				info.setImgfile(out);
 			}else if (needBase64==1){
 				//只返回base64
-				base64=shoter.getImgBase64(src, fmt);
+				base64=shoter.getImgBase64(src, fmt,width,height);
 				isSuccess=(base64!=null);
 				info.setBase64(base64);
 			}else if(needBase64==2) {
 				//既要保存文件也转换base64
 				String outfilepath=out+name+"."+fmt;
-				base64=shoter.shotAndGetBase64(src, outfilepath, fmt);
+				base64=shoter.shotAndGetBase64(src, outfilepath, fmt,width,height);
 				isSuccess=(base64!=null);
 				info.setBase64(base64);
 				info.setImgfile(out);
@@ -90,10 +91,13 @@ public class VideoShotServiceImpl implements VideoShotService {
 		
 		if(shotMapper.insertSelective(videoshotinfo)==1) {
 			log.info("保存截图数据成功");
+			videoshotinfo.setBase64(info.getBase64());
 			return videoshotinfo;
 		}
 		log.error("保存截图数据失败");
-		return null;
+		
+		info=null;param=null;
+		return videoshotinfo;
 	}
 
 	@Override

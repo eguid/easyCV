@@ -11,12 +11,17 @@
 	</parent>
 	<groupId>cc.eguid.cv.corelib</groupId>
 	<artifactId>videoimageshot</artifactId>
-	<version>1.1.0-2019.3.25</version>
+	<version>2019.4.18</version>
 	<name>videoimageshot</name>
 	<url>https://blog.eguid.cc</url>
 	<description>
 版本更新
-
+2019年4月18日
+1、支持截图缩放功能，可放大也可以缩小
+2、修复因为视频检索超时和缓存上限设置导致无法截图的bug
+3、修复非关键帧解码失败问题，只能截关键帧
+4、调整FFmpeg日志等级，不再显示非错误的FFmpeg日志
+	
 2018.9.21
 1、多项性能优化
 ①base64转换性能优化
