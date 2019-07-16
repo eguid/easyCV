@@ -8,9 +8,14 @@ import cc.eguid.cv.corelib.videoimageshot.threaddata.CurrentThreadData;
 
 /**
  * 线程安全的FFmpeg截图服务
+ * @see <li>
+ * <ol>推荐使用BufferedImageGrabber,BufferGrabber,BytesGrabber三个接口进行实现 </ol>
+ * <ol></ol>
+ * </li>
  * @author eguid
  *
  */
+@Deprecated
 public class FFmpegScreenshot implements Screenshot {
 
 	@Override
@@ -30,27 +35,6 @@ public class FFmpegScreenshot implements Screenshot {
 	}
 
 	@Override
-	public String getImgBase64(String url) throws IOException {
-		return getImgBase64(url, null);
-	}
-	
-	@Override
-	public String getImgBase64(String url, String format) throws IOException {
-		return getImgBase64(url, format, null, null);
-	}
-
-
-	@Override
-	public String shotAndGetBase64(String url, String imgurl)throws IOException {
-		return shotAndGetBase64(url,imgurl,null);
-	}
-
-	@Override
-	public String shotAndGetBase64(String url, String imgurl, String format) throws IOException {
-		return shotAndGetBase64(url,imgurl,format,null,null);
-	}
-
-	@Override
 	public boolean shot(String url, String imgurl, String format, Integer width, Integer height) throws IOException {
 		if (format == null) {
 			format =CurrentThreadData.DETAULT_FORMAT;
@@ -61,6 +45,26 @@ public class FFmpegScreenshot implements Screenshot {
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public String getImgBase64(String url) throws IOException {
+		return getImgBase64(url, null);
+	}
+	
+	@Override
+	public String getImgBase64(String url, String format) throws IOException {
+		return getImgBase64(url, format, null, null);
+	}
+
+	@Override
+	public String shotAndGetBase64(String url, String imgurl)throws IOException {
+		return shotAndGetBase64(url,imgurl,null);
+	}
+
+	@Override
+	public String shotAndGetBase64(String url, String imgurl, String format) throws IOException {
+		return shotAndGetBase64(url,imgurl,format,null,null);
 	}
 
 	@Override
@@ -89,4 +93,6 @@ public class FFmpegScreenshot implements Screenshot {
 		}
 		return null;
 	}
+
+	
 }

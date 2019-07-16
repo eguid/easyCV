@@ -30,6 +30,25 @@ import cc.eguid.cv.corelib.videoimageshot.threaddata.CurrentThreadData;
  */
 public class JavaImgConverter {
 	
+	public static final ThreadLocal<Encoder> localEncoder=new ThreadLocal<Encoder>() {
+		protected Encoder initialValue() {
+			return Base64Plus.getEncoder();
+		}; 
+	};
+	
+	public static final ThreadLocal<ByteArrayOutputStreamPlus> localbaos=new ThreadLocal<ByteArrayOutputStreamPlus>() {
+		protected ByteArrayOutputStreamPlus initialValue() {
+			ByteArrayOutputStreamPlus baos=new ByteArrayOutputStreamPlus(1280*720*3);
+			return baos;
+		}; 
+		@Override
+		public ByteArrayOutputStreamPlus get() {
+			ByteArrayOutputStreamPlus baos=super.get();
+			baos.reset();
+			return baos;
+		}
+	};
+	
 	private static int createRandomRgb() {
 		int[] rgbarr = new int[3];
 		rgbarr[0] = (int) (Math.random() * 255);
@@ -86,33 +105,6 @@ public class JavaImgConverter {
 		String base64=bufferedImage2Base64(image, format);
 		return base64;
 	}
-	
-	/**
-	 * 使用窗口显示BGR图像
-	 * @param width
-	 * @param height
-	 * @param src
-	 */
-	public static void viewBGR(int width,int height,ByteBuffer src) {
-		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-		Raster ra = image.getRaster();
-		DataBuffer out = ra.getDataBuffer();
-		DataBufferByte db=(DataBufferByte)out;
-		ByteBuffer.wrap(db.getData()).put(src);
-		viewImage(image);
-	}
-	
-	/**
-	 * 使用窗口显示RGB图像
-	 * @param width
-	 * @param height
-	 * @param rgbarr -int 
-	 */
-	public static void viewRGB(int[] rgbarr,int width,int height){
-		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		image.setRGB(0, 0, width, height, rgbarr, 0,height);
-		viewImage(image);
-	}
 
 	/**
 	 * bufferedImage转base64
@@ -121,8 +113,8 @@ public class JavaImgConverter {
 	 * @throws IOException
 	 */
 	public static String bufferedImage2Base64(BufferedImage image, String format) throws IOException {
-		Encoder encoder=CurrentThreadData.localEncoder.get();
-		ByteArrayOutputStreamPlus baos = CurrentThreadData.localbaos.get();
+		Encoder encoder=localEncoder.get();
+		ByteArrayOutputStreamPlus baos = localbaos.get();
 //		long last=System.currentTimeMillis();
 		ImageIO.write(image, format, baos);// 写出到字节流，这个耗时比较长
 //		long now=System.currentTimeMillis();
@@ -139,15 +131,29 @@ public class JavaImgConverter {
 	 * @return
 	 */
 	public static String buffer2Base64(ByteBuffer src) {
-		
-		Encoder encoder=CurrentThreadData.localEncoder.get();
+		Encoder encoder=localEncoder.get();
 		// 编码成base64
 		String encoded= encoder.encode2String(src);
 		return encoded;
 	}
+	/**
+	 * 24位BGR数组转BufferedImage
+	 * @param src -源数据数组
+	 * @param width -宽度
+	 * @param height-高度
+	 * @return
+	 */
+	public static BufferedImage BGR2BufferedImage(byte[] src,int width,int height) {
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+		Raster ra = image.getRaster();
+		DataBuffer out = ra.getDataBuffer();
+		DataBufferByte db=(DataBufferByte)out;
+		ByteBuffer.wrap(db.getData()).put(src,0,src.length);
+		return image;
+	}
 	
 	/**
-	 * 24位BGR转BufferedImage
+	 * 24位BGR字节缓冲转BufferedImage
 	 * @param src -源数据
 	 * @param width -宽度
 	 * @param height-高度
@@ -164,7 +170,7 @@ public class JavaImgConverter {
 
 	
 	/**
-	 * 24位整型BGR转BufferedImage
+	 * 24位整型BGR字节缓冲转BufferedImage
 	 * @param src -源数据
 	 * @param width -宽度
 	 * @param height-高度
@@ -180,7 +186,7 @@ public class JavaImgConverter {
 	}
 	
 	/**
-	 * 24位整型RGB转BufferedImage
+	 * 24位整型RGB字节缓冲转BufferedImage
 	 * @param src -源数据
 	 * @param width -宽度
 	 * @param height-高度
@@ -194,22 +200,9 @@ public class JavaImgConverter {
 		IntBuffer.wrap(db.getData()).put(src);
 		return image;
 	}
-
-	/**
-	 * 使用窗口显示BufferedImage图片
-	 * @param image -BufferedImage
-	 */
-	public static void viewImage(BufferedImage image) {
-		int width=image.getWidth(),height=image.getHeight();
-		JLabel label = new JLabel();
-		label.setSize(width, height);
-		label.setIcon(new ImageIcon(image));
-
-		JFrame frame = new JFrame();
-		frame.setSize(width, height);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.add(label);
-		frame.setVisible(true);
+	
+	public static void saveImage(BufferedImage image,String format,String file,String suffix) throws IOException {
+		ImageIO.write(image, format, new File(file+suffix));
 	}
 	
 	public static void saveImage(BufferedImage image,String format,String file) throws IOException {
@@ -227,4 +220,5 @@ public class JavaImgConverter {
 	public static void saveImage(BufferedImage image,String format,ImageOutputStream file) throws IOException {
 		ImageIO.write(image, format, file);
 	}
+
 }

@@ -1,6 +1,5 @@
 package cc.eguid.cv.corelib.videoimageshot.core;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

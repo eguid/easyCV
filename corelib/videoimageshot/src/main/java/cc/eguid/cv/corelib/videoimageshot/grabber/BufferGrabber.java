@@ -3,6 +3,11 @@ package cc.eguid.cv.corelib.videoimageshot.grabber;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+/**
+ * 图像字节缓冲抓取
+ * @author eguid
+ *
+ */
 public interface BufferGrabber {
 
 	/**
@@ -28,5 +33,5 @@ public interface BufferGrabber {
 	 * @throws IOException
 	 */
 	ByteBuffer grabBuffer(String url, Integer fmt) throws IOException;
-	
+
 }

@@ -27,4 +27,5 @@ public interface BufferedImageGrabber {
 	 * @throws IOException
 	 */
 	BufferedImage grabBufferImage(String url, Integer fmt) throws IOException;
+
 }

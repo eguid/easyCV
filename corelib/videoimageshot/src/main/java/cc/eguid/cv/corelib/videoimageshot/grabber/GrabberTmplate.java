@@ -12,11 +12,14 @@ import java.nio.ByteBuffer;
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.PointerPointer;
+import org.bytedeco.javacpp.avcodec.AVCodecParameters;
+import org.bytedeco.javacpp.indexer.ByteBufferIndexer;
 
 import cc.eguid.cv.corelib.videoimageshot.exception.CodecNotFoundExpception;
 import cc.eguid.cv.corelib.videoimageshot.exception.FileNotOpenException;
 import cc.eguid.cv.corelib.videoimageshot.exception.StreamInfoNotFoundException;
 import cc.eguid.cv.corelib.videoimageshot.exception.StreamNotFoundException;
+import cc.eguid.cv.corelib.videoimageshot.util.Console;
 
 public abstract class GrabberTmplate {
 
@@ -26,16 +29,12 @@ public abstract class GrabberTmplate {
 	static {
 		av_register_all();
 		avformat_network_init();
-		av_log_set_level(AV_LOG_ERROR);
+		av_log_set_level(AV_LOG_ERROR);//set log level
 	}
 	
-	protected Integer width;//宽度
-	protected Integer height;//高度
-	
-//	private final static int PROBESIZE=1920*1080;
-//	private final static int MAX_ANALYZE_DURATION=10 * AV_TIME_BASE;
-    private AVDictionary options = new AVDictionary();
-   
+	protected Integer width;//image width
+	protected Integer height;//image height
+    
 	public GrabberTmplate() {
 		super();
 	}
@@ -81,18 +80,17 @@ public abstract class GrabberTmplate {
 	}
 	
 	/**
-	 * 获取视频通道
+	 * 查找视频通道
 	 * @param pFormatCtx
 	 * @return
 	 */
 	protected int findVideoStreamIndex(AVFormatContext pFormatCtx) {
 		int size=pFormatCtx.nb_streams();
-//		System.err.println("流数量："+size);
 		for (int i = 0; i < size; i++) {
 			AVStream stream=pFormatCtx.streams(i);
-			AVCodecContext codec=stream.codec();
+			AVCodecContext codec=stream.codec();//update to a new function : stream.codecpar();
+//			AVCodecParameters codec=stream.codecpar();
 			int type=codec.codec_type();
-//			System.err.println("类型："+type);
 			if (type == AVMEDIA_TYPE_VIDEO) {
 				return i;
 			}
@@ -101,18 +99,17 @@ public abstract class GrabberTmplate {
 	}
 	
 	/**
-	 * 获取音频通道
+	 * 查找音频通道
 	 * @param pFormatCtx
 	 * @return
 	 */
 	protected int findAudioStreamIndex(AVFormatContext pFormatCtx) {
 		int size=pFormatCtx.nb_streams();
-//		System.err.println("流数量："+size);
 		for (int i = 0; i < size; i++) {
 			AVStream stream=pFormatCtx.streams(i);
-			AVCodecContext codec=stream.codec();
+			AVCodecContext codec=stream.codec();//ffmpeg 4.x update to a new function : stream.codecpar();
+//			AVCodecParameters codec=stream.codecpar();
 			int type=codec.codec_type();
-//			System.err.println("类型："+type);
 			if (type == AVMEDIA_TYPE_AUDIO) {
 				return i;
 			}
@@ -133,7 +130,7 @@ public abstract class GrabberTmplate {
 			AVCodecContext pCodecCtx = stream.codec();
 			return pCodecCtx;
 		}
-		//如果没找到视频流,抛出异常
+		//if no stream,throws Excetion.
 		throw new StreamNotFoundException("Didn't open video file");
 	}
 	
@@ -249,7 +246,7 @@ public abstract class GrabberTmplate {
 			avformat_close_input(pFormatCtx);// Close the video file
 		}
 	}
-	
+
 	/**
 	 * BGR图像帧转字节缓冲区（BGR结构）
 	 * 

@@ -10,6 +10,7 @@ import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.avutil.AVFrame;
 
 import cc.eguid.cv.corelib.videoimageshot.core.JavaImgConverter;
+import cc.eguid.cv.corelib.videoimageshot.util.Console;
 
 /**
  * 视频帧抓取
@@ -33,7 +34,7 @@ public class FFmpegVideoImageGrabber extends GrabberTmplate implements BufferGra
 	protected ByteBuffer saveFrame(AVFrame pFrame, int width, int height){
 		BytePointer data = pFrame.data(0);
 		int size = width * height * 3;
-		ByteBuffer buf = data.position(0).limit(size).asBuffer();
+		ByteBuffer buf = data.position(0).limit(size).asByteBuffer();
 		return buf;
 	}
 	
@@ -130,4 +131,6 @@ public class FFmpegVideoImageGrabber extends GrabberTmplate implements BufferGra
 	public void setFmt(int fmt) {
 		this.fmt = fmt;
 	}
+
+	
 }
