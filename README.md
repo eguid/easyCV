@@ -4,6 +4,26 @@
       Video recorder and snapshot(video image capture) service,based on javaCV. 
       基于javaCV的跨平台视频录像和快照(视频截图)服务，开箱即用。
 ### 更新
+	2019年7月17日更新
+	1、调整了截图库代码结构
+	2、向下兼容老版本，但不再推荐使用原有的调用方式
+	3、新增了一个图像像素数据字节数组抓取器(BytesGrabber)，它能够获得图像的像素数组
+	4、新增了一个Base64图像编码数据抓取器（Base64Grabber），用于取代原来的调用方式
+	5、重新根据ffmpeg4.x最新解码库api实现视频解码流程，支持B、P帧解码，与原有代码不兼容，所以新创建新的FFmpeg4VideoImageGrabber以示区别
+	6、推荐的使用方式是
+	`
+	//可以通过BufferedImageGrabber直接截取得到java图像
+	BufferedImageGrabber grabber=new FFmpeg4VideoImageGrabber();
+	//可以通过Base64Grabber轻松截取base64图像编码数据
+	Base64Grabber grabber=new FFmpeg4VideoImageGrabber();
+	//可以通过BufferGrabber获取截图图像的缓冲数据
+	BufferGrabber grabber =new FFmpeg4VideoImageGrabber();
+	//可以通过BytesGrabber获取截图图像的像素数组数据
+	BytesGrabber grabber=new FFmpeg4VideoImageGrabber();
+	`
+	根据需要自行调用和管理，本项目只提供可靠的截图库，而不是大而全的框架。
+	
+	2019年4月18日更新
       1、录像服务的持久层设计不合理，现去除录像服务的持久层接口
       2、新增两个与springboot+postgre数据库演示demo
   

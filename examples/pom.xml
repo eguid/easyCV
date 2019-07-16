@@ -19,10 +19,9 @@
 	</properties>
 	
 	<modules>
-		<!--
 		<module>videoimageshot-web</module> 
 		<module>videorecorder-web</module>
-    	<module>videorecorder-postgre</module> -->
+    	<module>videorecorder-postgre</module> 
     	<module>videoshot-postgre</module>
   	</modules>
   	<dependencyManagement>
