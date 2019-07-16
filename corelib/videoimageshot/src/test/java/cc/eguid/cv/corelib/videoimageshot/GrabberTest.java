@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import cc.eguid.cv.corelib.videoimageshot.core.JavaImgConverter;
 import cc.eguid.cv.corelib.videoimageshot.grabber.FFmpegVideoImageGrabber;
+import cc.eguid.cv.corelib.videoimageshot.util.ImageView;
 
 public class GrabberTest {
 
@@ -21,7 +22,7 @@ public class GrabberTest {
 		BufferedImage image=new FFmpegVideoImageGrabber("rtmp://10.23.49.12:1935/live/100200009").grabBufferImage();
 //		JavaImgConverter.viewBGR(1280, 720, buf);
 //		BufferedImage image=JavaImgConverter.BGR2BufferedImage(buf, 1280,720);
-		JavaImgConverter.viewImage(image);
+		ImageView.show(image);
 	}
 
 

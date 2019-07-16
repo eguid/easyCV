@@ -79,12 +79,12 @@ public class FFmpegScreenshotTest {
 	
 	public static void main(String[] args) throws IOException {
 //		shotJpg();
-//		shotPng();
+		shotPng();
 //		shotJpeg();
 //		shotBmp();
 //		shotGif();
 //		shotGetBase64();
 //		shotAndGetBase64();
-		shotAndGetBase64Scale();
+//		shotAndGetBase64Scale();
 	}
 }
