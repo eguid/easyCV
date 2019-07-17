@@ -4,10 +4,11 @@ import java.io.IOException;
 
 /**
  * 图像字节数组抓取
- * @author eguid-matebook
+ * @author eguid
  *
  */
-public interface BytesGrabber {
+public interface BytesGrabber extends Grabber{
+	
 	/**
 	 * 抓取图像缓冲区(确保已经设置了url参数，默认获取BGR数据)
 	 * @return
@@ -32,6 +33,16 @@ public interface BytesGrabber {
 	 */
 	byte[] grabBytes(String url, Integer fmt) throws IOException;
 
+	/**
+	 * 连续获取图像帧
+	 * @param url -视频地址（默认BGR24像素格式）
+	 * @param sum -截图总次数
+	 * @param interval -间隔（每隔几帧截图一次，需要自行确定视频帧率）
+	 * @return
+	 * @throws IOException
+	 */
+	byte[][] grabBytes(String url, int sum, int interval) throws IOException;
+	
 	/**
 	 * 连续获取图像帧
 	 * @param url -视频地址

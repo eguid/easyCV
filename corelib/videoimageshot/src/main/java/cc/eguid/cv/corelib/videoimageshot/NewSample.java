@@ -8,7 +8,8 @@ import cc.eguid.cv.corelib.videoimageshot.grabber.Base64Grabber;
 import cc.eguid.cv.corelib.videoimageshot.grabber.BufferGrabber;
 import cc.eguid.cv.corelib.videoimageshot.grabber.BufferedImageGrabber;
 import cc.eguid.cv.corelib.videoimageshot.grabber.BytesGrabber;
-import cc.eguid.cv.corelib.videoimageshot.grabber.FFmpeg4VideoImageGrabber;
+import cc.eguid.cv.corelib.videoimageshot.grabber.ffmpeg.FFmpeg4VideoImageGrabber;
+import cc.eguid.cv.corelib.videoimageshot.util.Console;
 import cc.eguid.cv.corelib.videoimageshot.util.ImageView;
 
 /**
@@ -28,6 +29,11 @@ public class NewSample {
 	public static byte[] bytesImageSample2(String url) throws IOException {
 		BytesGrabber grabber=new FFmpeg4VideoImageGrabber();
 		return grabber.grabBytes(url);
+	}
+	
+	public static byte[][] bytesImageSample3(String url,int sum,int interval) throws IOException{
+		BytesGrabber grabber=new FFmpeg4VideoImageGrabber();
+		return grabber.grabBytes(url, sum, interval);
 	}
 
 	public static BufferedImage bufferImageSample(String url) throws IOException {
@@ -71,15 +77,23 @@ public class NewSample {
 		//截图保存图片到指定位置并返回base64数据
 		return grabber.shotAndGetBase64Image(url, "test.png", "png",800, 600);
 	}
+	
+	
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		String url="rtmp://live.hkstv.hk.lxdns.com/live/hks1";
-
+		byte[][] ret=bytesImageSample3(url,5,100);
+		Console.log(ret.length);
+		for(byte[] r:ret) {
+			Console.log("像素数据长度："+r.length);
+			ImageView.showBGR(480,288,r);
+			Thread.sleep(1000);
+		}
 //		ImageView.showBGR(480,288,bytesImageSample2(url));
 		//显示
 //		ImageView.show(bufferImageSample(url));
 		
-		ImageView.showBGR(480,288,bufferedImageSample(url));
+//		ImageView.showBGR(480,288,bufferedImageSample(url));
 //		Console.log(base64ImageSample(url));
 //		Console.log(base64ImageSample4(url));
 	}

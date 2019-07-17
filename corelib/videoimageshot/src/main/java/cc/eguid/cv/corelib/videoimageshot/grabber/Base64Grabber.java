@@ -8,7 +8,7 @@ import java.io.IOException;
  * @author eguid
  *
  */
-public interface Base64Grabber {
+public interface Base64Grabber extends Grabber{
 
 	/**
 	 * 截取已转换为base64的图像数据

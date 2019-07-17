@@ -1,4 +1,4 @@
-package cc.eguid.cv.corelib.videoimageshot.grabber;
+package cc.eguid.cv.corelib.videoimageshot.grabber.ffmpeg;
 
 import static org.bytedeco.javacpp.avutil.AV_PIX_FMT_BGR24;
 
@@ -10,18 +10,21 @@ import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.avutil.AVFrame;
 
 import cc.eguid.cv.corelib.videoimageshot.core.JavaImgConverter;
+import cc.eguid.cv.corelib.videoimageshot.grabber.Base64Grabber;
+import cc.eguid.cv.corelib.videoimageshot.grabber.BufferGrabber;
+import cc.eguid.cv.corelib.videoimageshot.grabber.BufferedImageGrabber;
+import cc.eguid.cv.corelib.videoimageshot.grabber.BytesGrabber;
 
 /**
- * 使用新版本的ffmpeg-api重写了整个流程
- * @author eguid-matebook
- *
+ * Updated the code according to the new ffmpeg api to better support the screenshot function
+ * @author eguid
  */
 public class FFmpeg4VideoImageGrabber extends GrabberTemplate4 implements Base64Grabber,BufferedImageGrabber,BufferGrabber,BytesGrabber{
 
 	public final static String DETAULT_FORMAT = "jpg";
 	
 	@Override
-	byte[] saveFrame(AVFrame frameRGB, int width, int height) {
+	public byte[] saveFrame(AVFrame frameRGB, int width, int height) {
 		BytePointer data = frameRGB.data(0);
 		int size = width * height * 3;
 		//复制虚拟机外内存数据到java虚拟机中，因为这个方法之后会清理内存
@@ -66,8 +69,17 @@ public class FFmpeg4VideoImageGrabber extends GrabberTemplate4 implements Base64
 	}
 
 	@Override
+	public byte[][] grabBytes(String url, int sum, int interval) throws IOException {
+		return grabBytes(url,null,sum,interval);
+	}
+	
+	@Override
 	public byte[][] grabBytes(String url, Integer fmt, int sum, int interval) throws IOException {
-		return grabVideoFrame(url, fmt, sum, interval);
+		byte[][] bufs=null;
+		if(validateAndInit(url,fmt)) {
+			bufs= grabVideoFrame(url, this.fmt, sum, interval);
+		}
+		return bufs;
 	}
 	
 	@Override

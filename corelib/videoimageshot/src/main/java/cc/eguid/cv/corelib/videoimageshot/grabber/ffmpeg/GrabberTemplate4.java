@@ -1,4 +1,4 @@
-package cc.eguid.cv.corelib.videoimageshot.grabber;
+package cc.eguid.cv.corelib.videoimageshot.grabber.ffmpeg;
 
 import static org.bytedeco.javacpp.avcodec.*;
 import static org.bytedeco.javacpp.avformat.*;
@@ -23,6 +23,7 @@ import cc.eguid.cv.corelib.videoimageshot.exception.CodecNotFoundExpception;
 import cc.eguid.cv.corelib.videoimageshot.exception.FileNotOpenException;
 import cc.eguid.cv.corelib.videoimageshot.exception.StreamInfoNotFoundException;
 import cc.eguid.cv.corelib.videoimageshot.exception.StreamNotFoundException;
+import cc.eguid.cv.corelib.videoimageshot.grabber.Grabber;
 import cc.eguid.cv.corelib.videoimageshot.util.Console;
 
 /**
@@ -30,7 +31,7 @@ import cc.eguid.cv.corelib.videoimageshot.util.Console;
  * @author eguid
  *
  */
-public abstract class GrabberTemplate4 {
+public abstract class GrabberTemplate4 implements Grabber{
 
 	/*
 	 * Register all formats and codecs
@@ -332,8 +333,6 @@ public abstract class GrabberTemplate4 {
 	 */
 	public byte[][] grabVideoFrame(String url,int fmt,int sum,int interval) throws IOException {
 
-		Console.log("截图总数："+sum);
-
 		//初始化存储数组
 		byte[][] byteBuffers=null;
 		if(sum>0) {
@@ -347,13 +346,10 @@ public abstract class GrabberTemplate4 {
 		}
 		try {
 			for(int i=0,num=0 ;num<sum&&av_read_frame(pFormatCtx, packet) == 0;){
-				Console.log("读取视频帧次数："+i);
+				
 				// Is this a packet from the video stream?
-				Console.log("是否视频帧："+(packet.stream_index()== videoStreamIndex));
 				if (packet.stream_index() == videoStreamIndex) {
-					Console.log("是否符合截图要求："+(i%interval));
 					if(i%interval==0) {
-						Console.log("符合截图要求，正在进行解码");
 						//把需要解码的视频帧送进解码器
 						//Send video packet to be decoding
 						if(avcodec_send_packet(pCodecCtx, packet)==0) {
@@ -369,7 +365,6 @@ public abstract class GrabberTemplate4 {
 								// Convert the image from its native format to BGR
 								sws_scale(sws_ctx, pFrame.data(), pFrame.linesize(), 0, srcHeight, outFrameRGB.data(),outFrameRGB.linesize());
 								//Convert BGR to ByteBuffer
-								Console.log("转换像素格式");
 								byteBuffers[num++]= saveFrame(outFrameRGB, width, height);
 								
 								av_free(buffer);//free buffer
@@ -381,7 +376,6 @@ public abstract class GrabberTemplate4 {
 				// Free the packet that was allocated by av_read_frame
 				av_packet_unref(packet);
 			}
-			Console.log("结束，返回数组");
 			//读取错误或读取完成
 			return byteBuffers;
 		}finally {
@@ -389,14 +383,4 @@ public abstract class GrabberTemplate4 {
 		}
 	}
 	
-	/**
-	 * BGR图像帧转字节缓冲区（BGR结构）
-	 * 
-	 * @param pFrame BGR图像帧
-	 * @param width
-	 * @param height
-	 * @return
-	 * @throws IOException
-	 */
-	abstract byte[] saveFrame(AVFrame pFrameRGB, int width, int height);
 }

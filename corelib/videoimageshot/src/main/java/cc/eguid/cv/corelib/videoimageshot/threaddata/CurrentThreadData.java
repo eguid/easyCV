@@ -1,6 +1,6 @@
 package cc.eguid.cv.corelib.videoimageshot.threaddata;
 
-import cc.eguid.cv.corelib.videoimageshot.grabber.FFmpegVideoImageGrabber;
+import cc.eguid.cv.corelib.videoimageshot.grabber.ffmpeg.FFmpegVideoImageGrabber;
 
 /**
  * 当前线程共享数据

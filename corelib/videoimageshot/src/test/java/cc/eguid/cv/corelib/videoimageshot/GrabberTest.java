@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import cc.eguid.cv.corelib.videoimageshot.core.JavaImgConverter;
-import cc.eguid.cv.corelib.videoimageshot.grabber.FFmpegVideoImageGrabber;
+import cc.eguid.cv.corelib.videoimageshot.grabber.ffmpeg.FFmpegVideoImageGrabber;
 import cc.eguid.cv.corelib.videoimageshot.util.ImageView;
 
 public class GrabberTest {

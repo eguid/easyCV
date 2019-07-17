@@ -3,7 +3,7 @@ package cc.eguid.cv.corelib.videoimageshot.grabber;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public interface BufferedImageGrabber {
+public interface BufferedImageGrabber{
 	/**
 	 * 抓取图像(确保已经设置了url参数，默认获取BGR数据)
 	 * @return

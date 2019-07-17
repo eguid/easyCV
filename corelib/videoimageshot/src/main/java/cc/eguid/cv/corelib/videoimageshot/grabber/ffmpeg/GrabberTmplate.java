@@ -1,4 +1,4 @@
-package cc.eguid.cv.corelib.videoimageshot.grabber;
+package cc.eguid.cv.corelib.videoimageshot.grabber.ffmpeg;
 
 import static org.bytedeco.javacpp.avcodec.*;
 import static org.bytedeco.javacpp.avformat.*;
@@ -21,6 +21,13 @@ import cc.eguid.cv.corelib.videoimageshot.exception.StreamInfoNotFoundException;
 import cc.eguid.cv.corelib.videoimageshot.exception.StreamNotFoundException;
 import cc.eguid.cv.corelib.videoimageshot.util.Console;
 
+/**
+ * 推荐使用GrabberTmplate4来替换该实现
+ * @see GrabberTmplate4
+ * @author eguid
+ *
+ */
+@Deprecated
 public abstract class GrabberTmplate {
 
 	/*

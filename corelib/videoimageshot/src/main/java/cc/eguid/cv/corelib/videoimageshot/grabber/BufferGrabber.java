@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
  * @author eguid
  *
  */
-public interface BufferGrabber {
+public interface BufferGrabber{
 
 	/**
 	 * 抓取图像缓冲区(确保已经设置了url参数，默认获取BGR数据)

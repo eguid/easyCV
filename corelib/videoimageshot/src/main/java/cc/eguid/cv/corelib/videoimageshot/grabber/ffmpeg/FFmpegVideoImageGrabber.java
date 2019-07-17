@@ -1,4 +1,4 @@
-package cc.eguid.cv.corelib.videoimageshot.grabber;
+package cc.eguid.cv.corelib.videoimageshot.grabber.ffmpeg;
 
 import static org.bytedeco.javacpp.avutil.AV_PIX_FMT_BGR24;
 
@@ -10,14 +10,18 @@ import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.avutil.AVFrame;
 
 import cc.eguid.cv.corelib.videoimageshot.core.JavaImgConverter;
+import cc.eguid.cv.corelib.videoimageshot.grabber.BufferGrabber;
+import cc.eguid.cv.corelib.videoimageshot.grabber.BufferedImageGrabber;
 import cc.eguid.cv.corelib.videoimageshot.util.Console;
 
 /**
  * 视频帧抓取
- * 
+ * 推荐使用FFmpeg4VideoImageGrabber
+ * @see FFmpeg4VideoImageGrabber
  * @author eguid
  *
  */
+@Deprecated
 public class FFmpegVideoImageGrabber extends GrabberTmplate implements BufferGrabber,BufferedImageGrabber{
 	
 	public FFmpegVideoImageGrabber setWidth(Integer width) {
