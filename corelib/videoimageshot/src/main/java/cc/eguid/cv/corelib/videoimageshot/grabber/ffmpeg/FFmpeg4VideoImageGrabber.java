@@ -100,6 +100,26 @@ public class FFmpeg4VideoImageGrabber extends GrabberTemplate4 implements Base64
 	}
 
 	@Override
+	public ByteBuffer[] grabBuffers(String url, int sum, int interval) throws IOException {
+		return grabBuffers(url,null,sum,interval);
+	}
+
+	@Override
+	public ByteBuffer[] grabBuffers(String url, Integer fmt, int sum, int interval) throws IOException {
+		if(sum>0) {
+			byte[][] bytes=grabBytes(url,fmt, sum, interval);
+			if(bytes!=null) {
+				ByteBuffer[] bufs=new ByteBuffer[sum];
+				for(int i=0;i<bytes.length;i++) {
+					bufs[i]=ByteBuffer.wrap(bytes[i]);
+				}
+				return bufs;
+			}
+		}
+		return null;
+	}
+	
+	@Override
 	public BufferedImage grabBufferImage() throws IOException {
 		return grabBufferImage(this.url,null);
 	}
@@ -116,6 +136,28 @@ public class FFmpeg4VideoImageGrabber extends GrabberTemplate4 implements Base64
 		image= JavaImgConverter.BGR2BufferedImage(buf,this.width,this.height);
 		return image;
 	}
+	
+	@Override
+	public BufferedImage[] grabBufferImages(String url, int sum, int interval) throws IOException {
+		return grabBufferImages(url,null,sum,interval);
+	}
+
+	@Override
+	public BufferedImage[] grabBufferImages(String url, Integer fmt, int sum, int interval) throws IOException {
+		BufferedImage[] images=null;
+		if(sum>0) {
+			byte[][] bytes=grabBytes(url,fmt, sum, interval);
+			if(bytes!=null) {
+				images=new BufferedImage[sum];
+				for(int i=0;i<bytes.length;i++) {
+					images[i]= JavaImgConverter.BGR2BufferedImage(bytes[i],this.width,this.height);
+				}
+				return images;
+			}
+		}
+		return null;
+	}
+
 	
 	@Override
 	public String getBase64Image(String url) throws IOException {

@@ -57,7 +57,7 @@ public abstract class GrabberTemplate4 implements Grabber{
 	
 	private SwsContext sws_ctx;//图像缩放和像素格式转换上下文
 	private AVFrame outFrameRGB;//用于存储转换后的RGB像素数据，默认转换成RGB
-    
+ 
 	public GrabberTemplate4() {
 		super();
 	}
@@ -313,7 +313,7 @@ public abstract class GrabberTemplate4 implements Grabber{
 			//读取错误或读取完成
 			return null;
 		}finally {
-			av_free(buffer);//Don't free buffer
+			av_free(buffer);//Don't free buffer?	Of course not!
 			freeAndClose();
 		}
 	}

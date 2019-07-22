@@ -136,5 +136,49 @@ public class FFmpegVideoImageGrabber extends GrabberTmplate implements BufferGra
 		this.fmt = fmt;
 	}
 
+	/**
+	 * 未实现，推荐使用FFmpeg4VideoImageGrabber
+	 * @see FFmpeg4VideoImageGrabber
+	 */
+	@Deprecated
+	@Override
+	public ByteBuffer[] grabBuffers(String url, int sum, int interval) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * 未实现，推荐使用FFmpeg4VideoImageGrabber
+	 * @see FFmpeg4VideoImageGrabber
+	 */
+	@Deprecated
+	@Override
+	public ByteBuffer[] grabBuffers(String url, Integer fmt, int sum, int interval) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * 未实现，推荐使用FFmpeg4VideoImageGrabber
+	 * @see FFmpeg4VideoImageGrabber
+	 */
+	@Deprecated
+	@Override
+	public BufferedImage[] grabBufferImages(String url, int sum, int interval) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * 未实现，推荐使用FFmpeg4VideoImageGrabber
+	 * @see FFmpeg4VideoImageGrabber
+	 */
+	@Deprecated
+	@Override
+	public BufferedImage[] grabBufferImages(String url, Integer fmt, int sum, int interval) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }
