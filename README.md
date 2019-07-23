@@ -4,6 +4,9 @@
       Video recorder and snapshot(video image capture) library,based on javaCV. 
       基于javaCV的跨平台视频录像和快照(视频截图)库，开箱即用。
 ### 更新
+	2019年7月22日
+	1、新增BufferGrabber和BufferedImageGrabber的连续截图语法糖
+	
 	2019年7月17日b
 	1、增加连续截图功能，目前只限通过BytesGrabber进行连续截图
 	1.1、连续截图提供视频源地址、截图总数、间隔（隔几帧）
@@ -28,10 +31,6 @@
 	BytesGrabber grabber=new FFmpeg4VideoImageGrabber();
 	`
 	根据需要自行调用和管理，本项目只提供可靠的截图库，而不是大而全的框架。
-	
-	2019年4月18日
-      1、录像服务的持久层设计不合理，现去除录像服务的持久层接口
-      2、新增两个与springboot+postgre数据库演示demo
   
 ### 演示demo
 1、[截图服务在线演示：http://eguid.cc/screenshot/test](http://eguid.cc/screenshot/test)<br />
