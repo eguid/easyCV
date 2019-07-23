@@ -32,6 +32,19 @@
 	`
 	根据需要自行调用和管理，本项目只提供可靠的截图库，而不是大而全的框架。
   
+### 调用方式
+	目前除了Base64Grabber之外其他Grabber都实现了连续截图api
+`
+	//可以通过BufferedImageGrabber直接截取得到java图像
+	BufferedImageGrabber grabber=new FFmpeg4VideoImageGrabber();
+	//可以通过Base64Grabber轻松截取base64图像编码数据
+	Base64Grabber grabber=new FFmpeg4VideoImageGrabber();
+	//可以通过BufferGrabber获取截图图像的缓冲数据
+	BufferGrabber grabber =new FFmpeg4VideoImageGrabber();
+	//可以通过BytesGrabber获取截图图像的像素数组数据
+	BytesGrabber grabber=new FFmpeg4VideoImageGrabber();
+`
+
 ### 演示demo
 1、[截图服务在线演示：http://eguid.cc/screenshot/test](http://eguid.cc/screenshot/test)<br />
       
