@@ -6,6 +6,7 @@
 ### 更新
 	2019年7月22日
 	1、新增BufferGrabber和BufferedImageGrabber的连续截图语法糖
+	2、截图库不再依赖javaCV
 	
 	2019年7月17日b
 	1、增加连续截图功能，目前只限通过BytesGrabber进行连续截图
