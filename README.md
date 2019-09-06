@@ -55,7 +55,7 @@
        同样可以通过http://eguid.cc/videorecord/查看历史录像列表并进行点播观看
  
 ### dependency library
-      Corelib based on 'javacv 1.4.x',exaples based on 'spring-boot 2.x'.
+      Corelib based on 'javaCPP 1.4.X' & 'javaCPP-FFMPEG-1.4.x' & 'javacv 1.4.x',exaples based on 'spring-boot 2.x'.
 
 ### build
       Based on jdk1.8,build on maven 3.7.
