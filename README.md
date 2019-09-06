@@ -63,7 +63,7 @@
 ### About core library
       核心库提供截图快照和视频录像两套API，exaples中提供了几个演示示例，分别依赖录像和截图corelib
 
-### Sample web project description
+### Examples project description
     提供了几个springboot演示服务demo，截图服务演示demo默认使用8081端口，录像服务使用8082端口。
     其中截图功能支持保存成文件和返回base64两种方式获取截图。
     截图文件与录像文件都需要额外配合一个单独http/ftp服务才能进行访问
