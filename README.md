@@ -3,7 +3,7 @@
 # easyCV
       Video recorder and snapshot(video image capture) library,based on javaCPP & javaCV & FFmpeg. 
       基于javaCV的跨平台视频录像和快照(视频截图)库，开箱即用。
-### 更新
+### UPDATE
 	2019年7月22日
 	1、新增BufferGrabber和BufferedImageGrabber的连续截图语法糖
 	2、截图库不再依赖javaCV
@@ -33,7 +33,7 @@
 	`
 	根据需要自行调用和管理，本项目只提供可靠的截图库，而不是大而全的框架。
   
-### 调用方式
+### USE SAMPLES
 	目前除了Base64Grabber之外其他Grabber都实现了连续截图api
 ```
 	//可以通过BufferedImageGrabber直接截取得到java图像
@@ -46,7 +46,7 @@
 	BytesGrabber grabber=new FFmpeg4VideoImageGrabber();
 ```
 
-### 演示demo
+### ONLINE DEMO 
 1、[截图服务在线演示：http://eguid.cc/screenshot/test](http://eguid.cc/screenshot/test)<br />
       
 2、[录像服务在线演示：http://eguid.cc/videorecord/test](http://eguid.cc/videorecord/test)<br />
