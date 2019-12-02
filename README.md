@@ -1,11 +1,12 @@
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 [![LICENSE](https://camo.githubusercontent.com/f969af70fa6573766a11cb0a968fc82b069298f1/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f6c6963656e73652f6c697a68696368616f2f6f6e652e737667)](https://github.com/eguid/easyCV/blob/master/LICENSE)
 # easyCV
-      Video recorder and snapshot(video image capture) library,based on javaCV. 
+      Video recorder and snapshot(video image capture) library,based on javaCPP & javaCV & FFmpeg. 
       基于javaCV的跨平台视频录像和快照(视频截图)库，开箱即用。
-### 更新
+### Update
 	2019年7月22日
 	1、新增BufferGrabber和BufferedImageGrabber的连续截图语法糖
+	2、截图库不再依赖javaCV
 	
 	2019年7月17日b
 	1、增加连续截图功能，目前只限通过BytesGrabber进行连续截图
@@ -32,7 +33,7 @@
 	`
 	根据需要自行调用和管理，本项目只提供可靠的截图库，而不是大而全的框架。
   
-### 调用方式
+### Use samples
 	目前除了Base64Grabber之外其他Grabber都实现了连续截图api
 ```
 	//可以通过BufferedImageGrabber直接截取得到java图像
@@ -45,7 +46,7 @@
 	BytesGrabber grabber=new FFmpeg4VideoImageGrabber();
 ```
 
-### 演示demo
+### Online demo 
 1、[截图服务在线演示：http://eguid.cc/screenshot/test](http://eguid.cc/screenshot/test)<br />
       
 2、[录像服务在线演示：http://eguid.cc/videorecord/test](http://eguid.cc/videorecord/test)<br />
@@ -53,23 +54,23 @@
        可以通过http://eguid.cc/screenshot/查看历史截图列表
        同样可以通过http://eguid.cc/videorecord/查看历史录像列表并进行点播观看
  
-### dependency library
-      Corelib based on 'javacv 1.4.x',exaples based on 'spring-boot 2.x'.
+### Dependency library
+      Corelib based on 'javaCPP 1.4.X' & 'javaCPP-FFMPEG-1.4.x' & 'javacv 1.4.x',exaples based on 'spring-boot 2.x'.
 
-### build
+### Build
       Based on jdk1.8,build on maven 3.7.
 
-### core lib
+### About core library
       核心库提供截图快照和视频录像两套API，exaples中提供了几个演示示例，分别依赖录像和截图corelib
 
-### exaples
+### Examples project description
     提供了几个springboot演示服务demo，截图服务演示demo默认使用8081端口，录像服务使用8082端口。
     其中截图功能支持保存成文件和返回base64两种方式获取截图。
     截图文件与录像文件都需要额外配合一个单独http/ftp服务才能进行访问
     录像服务演示demo除了需要指定保存路径外，与截图服务相同，我们一般把录像文件存放到http/ftp服务的根目录下，方便点播，推荐使用nginx、apache和iis）。
     demo中涉及到截图和录像信息的表结构都是简单的单表，这里就不提供了，直接查看*Mapper.xml文件即可
 
-### support
+### Format of video&Image support
     Video source support rtsp/rtmp/flv/hls/file formats,Record video file support mp4/flv/mkv/avi .... formats.
     Image file support jpg/png/jpeg/gif/bmp.
     视频源支持rtsp/rtmp/flv/hls/视频文件等多种格式。
