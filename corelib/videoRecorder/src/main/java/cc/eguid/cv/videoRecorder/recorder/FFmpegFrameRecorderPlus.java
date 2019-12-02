@@ -27,6 +27,7 @@ import static org.bytedeco.javacpp.avcodec.AV_PKT_FLAG_KEY;
 import static org.bytedeco.javacpp.avcodec.av_free_packet;
 import static org.bytedeco.javacpp.avcodec.av_init_packet;
 import static org.bytedeco.javacpp.avcodec.av_jni_set_java_vm;
+import static org.bytedeco.javacpp.avcodec.av_packet_unref;
 import static org.bytedeco.javacpp.avcodec.avcodec_alloc_context3;
 import static org.bytedeco.javacpp.avcodec.avcodec_copy_context;
 import static org.bytedeco.javacpp.avcodec.avcodec_encode_audio2;
@@ -1242,7 +1243,7 @@ public class FFmpegFrameRecorderPlus extends FrameRecorder {
 	            return writePacket(AVMEDIA_TYPE_AUDIO, pkt);
 	        }
         }finally {
-        	 av_free_packet(pkt);
+        	av_packet_unref(pkt);
         }
         return true;
     }

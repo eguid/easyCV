@@ -93,8 +93,14 @@ public interface Recorder {
 	Recorder stop();
 
 	/**
-	 * 用于保活
+	 * 线程是否可用
 	 * @return
 	 */
 	boolean alive();
+
+	/**
+	 * 工作线程实时状态，用于保活（状态码：0-初始状态，1-运行，2-停止）
+	 * @return
+	 */
+	int status();
 }

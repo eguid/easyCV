@@ -2,8 +2,6 @@ package cc.eguid.cv.videoRecorder.manager;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -149,9 +147,19 @@ public class DefaultTasksManager implements TasksManager {
 	
 	@Override
 	public boolean stop(RecordTask task) {
-		if (task!=null&&pool_size > 0 && work_size > 0 ) {
-			
+		if (task!=null) {
 			task.getRecorder().stop();// 停止录制
+			return recycleTask(task);
+		}
+		return false;
+	}
+	
+	/**
+	 * 回收对象
+	 * @return
+	 */
+	private boolean recycleTask(RecordTask task) {
+		if (task!=null&&pool_size > 0 && work_size > 0 ) {
 			task.setEndtime(now());
 			task.setStatus(STOP_STATUS);
 			// 工作池中有没有
@@ -163,7 +171,7 @@ public class DefaultTasksManager implements TasksManager {
 				idle_size++;
 				if (workpool.remove(task)) {
 					work_size--;
-					System.out.println("归还后，当前池数量："+pool_size+",空闲数量："+idle_size+",工作数量："+work_size);
+//					System.out.println("归还后，当前池数量："+pool_size+",空闲数量："+idle_size+",工作数量："+work_size);
 					return true;
 				}
 			}
@@ -253,8 +261,12 @@ public class DefaultTasksManager implements TasksManager {
 				public void run() {
 					for(RecordTask rt:idlepool) {
 						Recorder r=rt.getRecorder();
-						if(r!=null) {
-							r.alive();
+						if(r!=null&&r.alive()) {
+							//如果线程已经停止，回收该线程到空闲池
+							int status=r.status();
+							if(status==2) {
+								recycleTask(rt);
+							}
 						}
 					}
 				}
@@ -264,16 +276,16 @@ public class DefaultTasksManager implements TasksManager {
 
 	@Override
 	public boolean exist(String src, String out) {
-		System.err.println("检查本地服务是否在工作的录像任务："+src+","+out);
+//		System.err.println("检查本地服务是否在工作的录像任务："+src+","+out);
 		int index=-1;
 		for(RecordTask rt:workpool) {
-			System.err.println("循环中："+rt);
+//			System.err.println("循环中："+rt);
 			if(src.equals(rt.getSrc())&&rt.getOut().contains(out)) {
 				index++;
 				break;
 			}
 		}
-		System.err.println("检查本地服务是否在工作的录像任务结果："+index);
+//		System.err.println("检查本地服务是否在工作的录像任务结果："+index);
 		return index>=0;
 	}
 

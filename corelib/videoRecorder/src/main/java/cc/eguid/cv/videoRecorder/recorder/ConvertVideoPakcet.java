@@ -111,7 +111,7 @@ public class ConvertVideoPakcet {
 				}
 				//不需要编码直接把音视频帧推出去
 				err_index+=(record.recordPacket(pkt)?0:1);//如果失败err_index自增1
-				av_free_packet(pkt);
+				av_packet_unref(pkt);
 			}catch (Exception e) {//推流失败
 				err_index++;
 			} catch (IOException e) {

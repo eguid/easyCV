@@ -2,7 +2,6 @@ package cc.eguid.cv.videoRecorder.recorder;
 
 import static org.bytedeco.javacpp.avcodec.*;
 import static org.bytedeco.javacpp.avutil.*;
-import static org.bytedeco.javacpp.avformat.*;
 
 import java.io.IOException;
 
@@ -345,7 +344,7 @@ public class JavaCVRecord implements Recorder {
 				if (record.recordPacket(pkt)) {
 					System.err.println("推送成功：" + i++);
 				}
-				av_free_packet(pkt);
+				av_packet_unref(pkt);
 			} catch (Exception e) {// 推流失败
 				err_index++;
 				System.out.println("采集失败:" + err_index);
@@ -541,5 +540,10 @@ public class JavaCVRecord implements Recorder {
 		/**用于空闲定时器定期执行*/
 		return cuThread.isAlive();
 	}
-
+	
+	@Override
+	public int status() {
+		/**定时器会根据此状态判断是否需要回收线程至空闲池*/
+		return cuThread.getStatus();
+	}
 }
