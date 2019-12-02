@@ -4,6 +4,9 @@
       Video recorder and snapshot(video image capture) library,based on javaCPP & javaCV & FFmpeg. 
       基于javaCV的跨平台视频录像和快照(视频截图)库，开箱即用。
 ### Update
+	2019年12月2日
+	1、本次更新主要针对videoRecorder工作线程在特定情况下（异常）出现无法回收的bug
+	
 	2019年7月22日
 	1、新增BufferGrabber和BufferedImageGrabber的连续截图语法糖
 	2、截图库不再依赖javaCV
